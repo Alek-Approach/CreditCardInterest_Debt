@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Credit Card Interest & Debt Prioritization Worksheet | Approach ISC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#14254a; --navy-2:#223a6e; --gold:#c9a227; --gold-soft:#f6edd0;
+  --paper:#ffffff; --bg:#eef1f6; --ink:#1b2333; --muted:#5b6578; --line:#d6dbe5;
+  --good:#1e7a4c; --warn:#a33a2a;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "Source Sans 3",system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+h1,h2,h3{font-family:Lora,Georgia,"Times New Roman",serif;color:var(--navy);line-height:1.25;margin:0}
+.wrap{max-width:900px;margin:0 auto;padding:0 18px 60px}
+
+/* Header band */
+header.band{background:var(--navy);color:#fff;border-bottom:6px solid var(--gold)}
+header.band .wrap{padding-top:28px;padding-bottom:26px}
+.brand{color:var(--gold);font-weight:700;letter-spacing:.02em;font-size:15px;margin-bottom:6px}
+header.band h1{color:#fff;font-size:clamp(26px,4.5vw,38px)}
+header.band p{margin:8px 0 0;color:#d5dcec;max-width:640px}
+.student{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
+.student label{display:flex;flex-direction:column;font-size:14px;color:#d5dcec;flex:1 1 200px}
+.student input{margin-top:4px;padding:9px 11px;border-radius:6px;border:1px solid #3a4f80;background:#1c3060;color:#fff;font:inherit}
+.student input:focus{outline:3px solid var(--gold);outline-offset:1px}
+
+/* Toolbar */
+.toolbar{position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--line)}
+.toolbar .wrap{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding-top:10px;padding-bottom:10px}
+.toolbar nav{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:15px;flex:1}
+.toolbar nav a{color:var(--navy-2);text-decoration:none;font-weight:600}
+.toolbar nav a:hover{text-decoration:underline}
+.save-note{font-size:13px;color:var(--muted)}
+
+button{font:inherit;cursor:pointer;border-radius:6px;border:1px solid var(--navy);padding:7px 14px;background:var(--paper);color:var(--navy);font-weight:600}
+button.primary{background:var(--navy);color:#fff}
+button.gold{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+button:hover{filter:brightness(1.08)}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+/* Sections */
+section.part{margin-top:34px}
+.part-title{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--navy);padding-bottom:6px;margin-bottom:14px}
+.part-title h2{font-size:clamp(22px,3.5vw,28px)}
+.instructions{background:var(--gold-soft);border-left:5px solid var(--gold);padding:12px 16px;border-radius:0 8px 8px 0}
+.instructions p{margin:0}
+
+.scenario{background:var(--paper);border:1px solid var(--line);border-radius:10px;margin-top:22px;overflow:hidden}
+.scenario > header{background:var(--navy);color:#fff;padding:12px 18px;display:flex;gap:12px;align-items:center}
+.scenario > header .num{background:var(--gold);color:var(--navy);font-weight:700;border-radius:50%;width:32px;height:32px;display:grid;place-items:center;flex:none;font-family:Lora,Georgia,serif}
+.scenario > header h3{color:#fff;font-size:20px}
+.scenario .body{padding:16px 18px 20px}
+.facts{margin:0 0 14px;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.facts li{background:#eef2fa;border:1px solid #cfd8ea;border-radius:999px;padding:3px 12px;font-size:15px;color:var(--navy-2);font-weight:600}
+.q{margin:16px 0 0}
+.q > p{margin:0 0 6px;font-weight:600}
+.answer-row{display:flex;flex-wrap:wrap;gap:10px}
+.answer-row label{display:flex;flex-direction:column;font-size:14px;color:var(--muted);flex:1 1 180px}
+.money{position:relative;margin-top:3px}
+.money span{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.money input{padding-left:24px}
+input[type=text],input[type=number],textarea,select{width:100%;font:inherit;color:var(--ink);background:#fff;border:1px solid #b9c2d3;border-radius:6px;padding:8px 10px}
+textarea{min-height:90px;resize:vertical;line-height:1.5}
+.work{margin-top:6px}
+.work summary{cursor:pointer;color:var(--navy-2);font-weight:600;font-size:15px}
+.work textarea{margin-top:6px;min-height:70px}
+
+/* Calculator */
+.calc{margin-top:18px;border:2px solid var(--navy);border-radius:10px;overflow:hidden;background:#fbfcfe}
+.calc-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:#e7ecf6;padding:9px 14px;border-bottom:1px solid var(--line)}
+.calc-head strong{color:var(--navy);font-family:Lora,Georgia,serif;font-size:17px}
+.calc-head .hint{font-size:13px;color:var(--muted)}
+.calc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;padding:14px}
+.calc-grid label{font-size:14px;color:var(--muted);display:flex;flex-direction:column}
+.calc-grid label input{margin-top:3px}
+.calc-actions{display:flex;gap:8px;flex-wrap:wrap;padding:0 14px 12px}
+.results{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border-top:1px solid var(--line)}
+.results div{background:#fff;padding:10px 14px}
+.results small{display:block;color:var(--muted);font-size:13px}
+.results b{font-size:22px;color:var(--navy);font-family:Lora,Georgia,serif}
+.results .sub{display:block;font-size:13px;color:var(--muted)}
+.msg{padding:10px 14px;font-size:15px;border-top:1px solid var(--line)}
+.msg.warn{background:#fbecea;color:var(--warn)}
+.msg.info{background:#eef6f1;color:var(--good)}
+.table-wrap{overflow-x:auto;max-height:320px;border-top:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:6px 10px;text-align:right;border-bottom:1px solid #e6e9f0;white-space:nowrap}
+th{position:sticky;top:0;background:var(--navy);color:#fff;font-weight:600}
+th:first-child,td:first-child{text-align:center}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px 14px 14px}
+.compare > div{background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.compare h4{margin:0 0 4px;color:var(--navy);font-size:15px}
+.compare p{margin:2px 0;font-size:15px}
+.savings-line{grid-column:1/-1;background:var(--gold-soft)!important;border-color:var(--gold)!important;font-weight:600}
+@media (max-width:560px){.compare{grid-template-columns:1fr}}
+
+/* Debt table */
+.debts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:6px 0 4px}
+.debt{background:var(--paper);border:1px solid var(--line);border-top:5px solid var(--navy-2);border-radius:8px;padding:12px 14px}
+.debt h4{margin:0 0 4px;font-family:Lora,Georgia,serif;color:var(--navy);font-size:18px}
+.debt p{margin:0;color:var(--muted)}
+.debt p b{color:var(--ink)}
+.priority{display:grid;gap:10px}
+.priority label{display:grid;grid-template-columns:140px 1fr;align-items:center;gap:10px;font-weight:600;color:var(--navy)}
+@media (max-width:480px){.priority label{grid-template-columns:1fr}}
+.check-msg{margin-top:10px;font-size:15px}
+
+.reflection textarea{min-height:140px}
+footer{margin-top:40px;text-align:center;font-size:13px;color:var(--muted)}
+
+@media print{
+  body{background:#fff;font-size:12pt}
+  .toolbar,.calc-actions,.no-print{display:none!important}
+  .scenario,.calc{break-inside:avoid}
+  .table-wrap{max-height:none}
+  details.work{display:block}
+  details.work > *{display:block}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="band">
+  <div class="wrap">
+    <div class="brand">Approach International Student Center · Personal Finance</div>
+    <h1>Credit Card Interest Calculation Worksheet</h1>
+    <p>Complete each scenario. Use the built-in calculators, show your work, and round answers to the nearest dollar.</p>
+    <div class="student">
+      <label>Name<input type="text" id="studentName" autocomplete="name"></label>
+      <label>Date<input type="text" id="studentDate" placeholder="MM/DD/YYYY"></label>
+    </div>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="wrap">
+    <nav aria-label="Worksheet sections">
+      <a href="#s1">Scenario 1</a><a href="#s2">Scenario 2</a><a href="#s3">Scenario 3</a><a href="#s4">Scenario 4</a><a href="#reflect">Reflection</a><a href="#debt">Debt priorities</a>
+    </nav>
+    <span class="save-note" id="saveNote">Answers save automatically on this device.</span>
+    <button class="gold" id="downloadBtn" type="button">Download answers</button>
+    <button class="primary" id="printBtn" type="button">Print / Save PDF</button>
+  </div>
+</div>
+
+<main class="wrap">
+
+<section class="part" id="part1">
+  <div class="part-title"><h2>Part 1: Credit card interest</h2></div>
+  <div class="instructions"><p>Each scenario has its own calculator already filled in with the scenario numbers. Press <b>Calculate</b>, read the results, then type your rounded answers in the boxes. You may also change the numbers to test other situations.</p></div>
+
+  <!-- Scenario 1 -->
+  <article class="scenario" id="s1">
+    <header><span class="num">1</span><h3>Monthly payments</h3></header>
+    <div class="body">
+      <p>You purchased a laptop for $1,200 on a credit card with an APR of 18%.</p>
+      <ul class="facts"><li>Balance $1,200</li><li>APR 18%</li><li>Payment $50/month</li></ul>
+      <div class="q">
+        <p>a) If you only make the minimum payment of $50/month, how much interest will you pay until you pay it off?</p>
+        <div class="answer-row"><label>Total interest<div class="money"><span>$</span><input type="number" data-save="s1a" inputmode="decimal"></div></label></div>
+      </div>
+      <div class="q">
+        <p>b) What will the total cost of the laptop be after 30 months?</p>
+        <div class="answer-row"><label>Total cost<div class="money"><span>$</span><input type="number" data-save="s1b" inputmode="decimal"></div></label></div>
+      </div>
+      <details class="work"><summary>Show your work</summary><textarea data-save="s1work" aria-label="Scenario 1 work"></textarea></details>
+      <div class="calc" data-calc="card" data-balance="1200" data-apr="18" data-payment="50"></div>
+    </div>
+  </article>
+
+  <!-- Scenario 2 -->
+  <article class="scenario" id="s2">
+    <header><span class="num">2</span><h3>Reducing debt quickly</h3></header>
+    <div class="body">
+      <p>You owe $5,000 on a credit card with an APR of 14%.</p>
+      <ul class="facts"><li>Balance $5,000</li><li>APR 14%</li><li>Payment $200/month</li></ul>
+      <div class="q">
+        <p>a) If you pay $200/month, how long will it take to pay off the balance?</p>
+        <div class="answer-row"><label>Number of months<input type="number" data-save="s2a" inputmode="numeric"></label></div>
+      </div>
+      <div class="q">
+        <p>b) How much interest will you pay in total?</p>
+        <div class="answer-row"><label>Total interest<div class="money"><span>$</span><input type="number" data-save="s2b" inputmode="decimal"></div></label></div>
+      </div>
+      <details class="work"><summary>Show your work</summary><textarea data-save="s2work" aria-label="Scenario 2 work"></textarea></details>
+      <div class="calc" data-calc="card" data-balance="5000" data-apr="14" data-payment="200"></div>
+    </div>
+  </article>
+
+  <!-- Scenario 3 -->
+  <article class="scenario" id="s3">
+    <header><span class="num">3</span><h3>Impact of extra payments</h3></header>
+    <div class="body">
+      <p>You have a $10,000 balance at an APR of 16%.</p>
+      <ul class="facts"><li>Balance $10,000</li><li>APR 16%</li><li>Plan A $300/month</li><li>Plan B $400/month</li></ul>
+      <div class="q">
+        <p>a) If you pay $300/month, how much interest will you pay over 44 months?</p>
+        <div class="answer-row"><label>Total interest at $300/month<div class="money"><span>$</span><input type="number" data-save="s3a" inputmode="decimal"></div></label></div>
+      </div>
+      <div class="q">
+        <p>b) How much could you save in interest by increasing your monthly payment to $400/month?</p>
+        <div class="answer-row">
+          <label>Total interest at $400/month<div class="money"><span>$</span><input type="number" data-save="s3b1" inputmode="decimal"></div></label>
+          <label>Interest saved<div class="money"><span>$</span><input type="number" data-save="s3b2" inputmode="decimal"></div></label>
+        </div>
+      </div>
+      <details class="work"><summary>Show your work</summary><textarea data-save="s3work" aria-label="Scenario 3 work"></textarea></details>
+      <div class="calc" data-calc="card" data-balance="10000" data-apr="16" data-payment="300" data-payment2="400"></div>
+    </div>
+  </article>
+
+  <!-- Scenario 4 -->
+  <article class="scenario" id="s4">
+    <header><span class="num">4</span><h3>Credit card debt vs. savings</h3></header>
+    <div class="body">
+      <p>You want to buy a $2,000 TV.</p>
+      <ul class="facts"><li>Price $2,000</li><li>Card APR 20%, $40/month</li><li>Savings 3% APY, $200/month</li></ul>
+      <div class="q">
+        <p>a) If you use a credit card with a 20% APR and only make minimum payments of $40/month, how long will it take to pay it off, and how much will the TV cost in total?</p>
+        <div class="answer-row">
+          <label>Number of months<input type="number" data-save="s4a1" inputmode="numeric"></label>
+          <label>Total cost of the TV<div class="money"><span>$</span><input type="number" data-save="s4a2" inputmode="decimal"></div></label>
+        </div>
+      </div>
+      <div class="calc" data-calc="card" data-balance="2000" data-apr="20" data-payment="40"></div>
+
+      <div class="q" style="margin-top:22px">
+        <p>b) If you instead save $200/month in a high-interest savings account at 3% APY, how long will it take to save $2,000, and how much will you earn in interest?</p>
+        <div class="answer-row">
+          <label>Number of months<input type="number" data-save="s4b1" inputmode="numeric"></label>
+          <label>Interest earned<div class="money"><span>$</span><input type="number" data-save="s4b2" inputmode="decimal"></div></label>
+        </div>
+      </div>
+      <details class="work"><summary>Show your work</summary><textarea data-save="s4work" aria-label="Scenario 4 work"></textarea></details>
+      <div class="calc" data-calc="save" data-deposit="200" data-apy="3" data-goal="2000"></div>
+    </div>
+  </article>
+
+  <article class="scenario reflection" id="reflect">
+    <header><span class="num">?</span><h3>Reflection</h3></header>
+    <div class="body">
+      <p style="margin-top:0"><b>Why is it better to pay off credit card debt faster rather than just making minimum payments?</b> Use numbers from the scenarios above to support your answer.</p>
+      <textarea data-save="reflect" aria-label="Reflection answer"></textarea>
+    </div>
+  </article>
+</section>
+
+<section class="part" id="debt">
+  <div class="part-title"><h2>Part 2: Debt prioritization</h2></div>
+  <div class="instructions"><p>Read the scenario and decide which debt Person A should pay off first, second, and third. Explain your choices.</p></div>
+
+  <article class="scenario">
+    <header><span class="num">A</span><h3>Person A’s debts</h3></header>
+    <div class="body">
+      <div class="debts">
+        <div class="debt"><h4>Credit card debt</h4><p>Amount: <b>$5,000</b></p><p>APR: <b>18%</b></p></div>
+        <div class="debt"><h4>Student loans</h4><p>Amount: <b>$10,000</b></p><p>APR: <b>8%</b></p></div>
+        <div class="debt"><h4>Medical bills</h4><p>Amount: <b>$2,000</b></p><p>APR: <b>0%</b></p></div>
+      </div>
+
+      <div class="q">
+        <p>What is the order in which Person A should pay off the debts?</p>
+        <div class="priority">
+          <label for="p1">First priority<select id="p1" data-save="p1"></select></label>
+          <label for="p2">Second priority<select id="p2" data-save="p2"></select></label>
+          <label for="p3">Third priority<select id="p3" data-save="p3"></select></label>
+        </div>
+        <div class="check-msg" id="orderMsg" aria-live="polite"></div>
+      </div>
+
+      <div class="q"><p>Why did you choose the first debt as the highest priority?</p><textarea data-save="why1" aria-label="Reason for first priority"></textarea></div>
+      <div class="q"><p>Why is the second debt next?</p><textarea data-save="why2" aria-label="Reason for second priority"></textarea></div>
+      <div class="q"><p>Why is the third debt the lowest priority?</p><textarea data-save="why3" aria-label="Reason for third priority"></textarea></div>
+    </div>
+  </article>
+
+  <article class="scenario">
+    <header><span class="num">+</span><h3>Extra $500 each month</h3></header>
+    <div class="body">
+      <p style="margin-top:0"><b>If Person A has $500 extra each month, how would splitting this amount across the debts impact their progress?</b></p>
+      <textarea data-save="split" aria-label="Answer about splitting $500" style="min-height:140px"></textarea>
+    </div>
+  </article>
+
+  <div class="no-print" style="margin-top:24px;display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end">
+    <button type="button" id="clearBtn">Clear all answers</button>
+    <button type="button" class="gold" id="downloadBtn2">Download answers</button>
+    <button type="button" class="primary" id="printBtn2">Print / Save PDF</button>
+  </div>
+</section>
+
+<footer>Approach International Student Center · Personal Finance · Credit Card Interest Worksheet</footer>
+</main>
+
+<script>
+(function(){
+  "use strict";
+  var KEY = "approach-cc-worksheet-v1";
+  var fmt = function(n){ return "$" + n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2}); };
+  var fmt0 = function(n){ return "$" + Math.round(n).toLocaleString("en-US"); };
+  var yrs = function(m){ var y=Math.floor(m/12), r=m%12; return (y? y+" yr"+(y>1?"s":"")+" ":"") + (r? r+" mo":"") || "0 mo"; };
+
+  /* ---------- Credit card payoff ---------- */
+  function payoff(balance, apr, payment){
+    var r = apr/100/12, b = balance, interest = 0, rows = [], m = 0;
+    if (payment <= b*r) return {never:true, firstInterest:b*r};
+    while (b > 0.005 && m < 1200){
+      m++;
+      var i = b*r; interest += i;
+      var pay = Math.min(payment, b + i);
+      b = b + i - pay;
+      rows.push([m, pay, i, pay - i, Math.max(b,0)]);
+    }
+    return {months:m, interest:interest, total:balance+interest, rows:rows};
+  }
+
+  function buildCardCalc(el){
+    var d = el.dataset, two = !!d.payment2;
+    el.innerHTML =
+      '<div class="calc-head"><strong>Credit card payoff calculator</strong><span class="hint">Interest is charged monthly (APR ÷ 12).</span></div>'+
+      '<div class="calc-grid">'+
+        '<label>Balance ($)<input type="number" step="any" min="0" class="c-bal" value="'+d.balance+'"></label>'+
+        '<label>APR (%)<input type="number" step="any" min="0" class="c-apr" value="'+d.apr+'"></label>'+
+        '<label>'+(two?'Payment A ($/month)':'Monthly payment ($)')+'<input type="number" step="any" min="0" class="c-pay" value="'+d.payment+'"></label>'+
+        (two?'<label>Payment B ($/month)<input type="number" step="any" min="0" class="c-pay2" value="'+d.payment2+'"></label>':'')+
+      '</div>'+
+      '<div class="calc-actions"><button type="button" class="primary c-go">Calculate</button><button type="button" class="c-tbl">Show month-by-month table</button><button type="button" class="c-reset">Reset to scenario</button></div>'+
+      '<div class="c-out" aria-live="polite"></div>';
+
+    var q = function(s){ return el.querySelector(s); };
+    var tableShown = false, last = null;
+
+    function render(){
+      var bal = parseFloat(q(".c-bal").value), apr = parseFloat(q(".c-apr").value), pay = parseFloat(q(".c-pay").value);
+      var out = q(".c-out");
+      if ([bal,apr,pay].some(isNaN) || bal<=0 || pay<=0 || apr<0){ out.innerHTML='<div class="msg warn">Enter a balance, APR, and monthly payment greater than zero.</div>'; return; }
+      var a = payoff(bal, apr, pay); last = a;
+      if (a.never){ out.innerHTML='<div class="msg warn">This payment never pays off the debt. The first month’s interest alone is '+fmt(a.firstInterest)+', so the payment must be higher than that.</div>'; return; }
+      var html =
+        '<div class="results">'+
+          '<div><small>Months to pay off</small><b>'+a.months+'</b><span class="sub">'+yrs(a.months)+'</span></div>'+
+          '<div><small>Total interest paid</small><b>'+fmt0(a.interest)+'</b><span class="sub">'+fmt(a.interest)+'</span></div>'+
+          '<div><small>Total amount paid</small><b>'+fmt0(a.total)+'</b><span class="sub">'+fmt(a.total)+'</span></div>'+
+        '</div>';
+      if (q(".c-pay2")){
+        var p2 = parseFloat(q(".c-pay2").value), b = !isNaN(p2)&&p2>0 ? payoff(bal, apr, p2) : null;
+        if (b && !b.never){
+          html += '<div class="compare">'+
+            '<div><h4>Payment A: '+fmt0(pay)+'/month</h4><p>'+a.months+' months</p><p>Interest: '+fmt0(a.interest)+'</p></div>'+
+            '<div><h4>Payment B: '+fmt0(p2)+'/month</h4><p>'+b.months+' months</p><p>Interest: '+fmt0(b.interest)+'</p></div>'+
+            '<div class="savings-line">Difference in interest: '+fmt0(a.interest-b.interest)+' · Months saved: '+(a.months-b.months)+'</div>'+
+          '</div>';
+        }
+      }
+      if (tableShown) html += table(a.rows);
+      out.innerHTML = html;
+    }
+    function table(rows){
+      var h='<div class="table-wrap"><table><thead><tr><th>Month</th><th>Payment</th><th>Interest</th><th>Principal</th><th>Balance</th></tr></thead><tbody>';
+      rows.forEach(function(r){ h+='<tr><td>'+r[0]+'</td><td>'+fmt(r[1])+'</td><td>'+fmt(r[2])+'</td><td>'+fmt(r[3])+'</td><td>'+fmt(r[4])+'</td></tr>'; });
+      return h+'</tbody></table></div>';
+    }
+    q(".c-go").addEventListener("click", render);
+    q(".c-tbl").addEventListener("click", function(){ tableShown=!tableShown; this.textContent = tableShown?"Hide month-by-month table":"Show month-by-month table"; render(); });
+    q(".c-reset").addEventListener("click", function(){
+      q(".c-bal").value=d.balance; q(".c-apr").value=d.apr; q(".c-pay").value=d.payment; if(q(".c-pay2")) q(".c-pay2").value=d.payment2; q(".c-out").innerHTML='';
+    });
+    el.querySelectorAll("input").forEach(function(i){ i.addEventListener("keydown", function(e){ if(e.key==="Enter") render(); }); });
+  }
+
+  /* ---------- Savings goal ---------- */
+  function buildSaveCalc(el){
+    var d = el.dataset;
+    el.innerHTML =
+      '<div class="calc-head"><strong>Savings account calculator</strong><span class="hint">Deposit made at the end of each month; APY converted to a monthly rate.</span></div>'+
+      '<div class="calc-grid">'+
+        '<label>Monthly deposit ($)<input type="number" step="any" min="0" class="s-dep" value="'+d.deposit+'"></label>'+
+        '<label>APY (%)<input type="number" step="any" min="0" class="s-apy" value="'+d.apy+'"></label>'+
+        '<label>Savings goal ($)<input type="number" step="any" min="0" class="s-goal" value="'+d.goal+'"></label>'+
+      '</div>'+
+      '<div class="calc-actions"><button type="button" class="primary s-go">Calculate</button><button type="button" class="s-tbl">Show month-by-month table</button><button type="button" class="s-reset">Reset to scenario</button></div>'+
+      '<div class="s-out" aria-live="polite"></div>';
+    var q = function(s){ return el.querySelector(s); }, tableShown=false;
+
+    function render(){
+      var dep=parseFloat(q(".s-dep").value), apy=parseFloat(q(".s-apy").value), goal=parseFloat(q(".s-goal").value), out=q(".s-out");
+      if ([dep,apy,goal].some(isNaN) || dep<=0 || goal<=0 || apy<0){ out.innerHTML='<div class="msg warn">Enter a deposit, APY, and goal greater than zero.</div>'; return; }
+      var r = Math.pow(1+apy/100,1/12)-1, b=0, m=0, earned=0, rows=[];
+      while (b < goal - 0.005 && m < 1200){ m++; var i=b*r; earned+=i; b+=i+dep; rows.push([m,dep,i,b]); }
+      var html='<div class="results">'+
+        '<div><small>Months to reach goal</small><b>'+m+'</b><span class="sub">'+yrs(m)+'</span></div>'+
+        '<div><small>Interest earned</small><b>'+fmt0(earned)+'</b><span class="sub">'+fmt(earned)+'</span></div>'+
+        '<div><small>Your deposits</small><b>'+fmt0(dep*m)+'</b><span class="sub">'+fmt(dep*m)+'</span></div>'+
+        '<div><small>Final balance</small><b>'+fmt0(b)+'</b><span class="sub">'+fmt(b)+'</span></div>'+
+      '</div>';
+      if (tableShown){
+        html+='<div class="table-wrap"><table><thead><tr><th>Month</th><th>Deposit</th><th>Interest earned</th><th>Balance</th></tr></thead><tbody>';
+        rows.forEach(function(x){ html+='<tr><td>'+x[0]+'</td><td>'+fmt(x[1])+'</td><td>'+fmt(x[2])+'</td><td>'+fmt(x[3])+'</td></tr>'; });
+        html+='</tbody></table></div>';
+      }
+      out.innerHTML=html;
+    }
+    q(".s-go").addEventListener("click", render);
+    q(".s-tbl").addEventListener("click", function(){ tableShown=!tableShown; this.textContent=tableShown?"Hide month-by-month table":"Show month-by-month table"; render(); });
+    q(".s-reset").addEventListener("click", function(){ q(".s-dep").value=d.deposit; q(".s-apy").value=d.apy; q(".s-goal").value=d.goal; q(".s-out").innerHTML=''; });
+    el.querySelectorAll("input").forEach(function(i){ i.addEventListener("keydown", function(e){ if(e.key==="Enter") render(); }); });
+  }
+
+  document.querySelectorAll('[data-calc="card"]').forEach(buildCardCalc);
+  document.querySelectorAll('[data-calc="save"]').forEach(buildSaveCalc);
+
+  /* ---------- Priority dropdowns ---------- */
+  var debts = ["Credit card ($5,000 at 18%)","Student loans ($10,000 at 8%)","Medical bills ($2,000 at 0%)"];
+  ["p1","p2","p3"].forEach(function(id){
+    var s=document.getElementById(id);
+    s.innerHTML='<option value="">Choose a debt…</option>'+debts.map(function(t){return '<option>'+t+'</option>';}).join("");
+    s.addEventListener("change", checkOrder);
+  });
+  function checkOrder(){
+    var v=["p1","p2","p3"].map(function(id){return document.getElementById(id).value;}), msg=document.getElementById("orderMsg");
+    var filled=v.filter(Boolean);
+    if (filled.length && new Set(filled).size!==filled.length){ msg.innerHTML='<span style="color:var(--warn)">Each debt can only be chosen once.</span>'; }
+    else msg.textContent='';
+  }
+
+  /* ---------- Save / restore ---------- */
+  var fields = Array.prototype.slice.call(document.querySelectorAll("[data-save]"));
+  var nameEl=document.getElementById("studentName"), dateEl=document.getElementById("studentDate");
+  function load(){
+    try{
+      var data=JSON.parse(localStorage.getItem(KEY)||"{}");
+      fields.forEach(function(f){ if(data[f.dataset.save]!=null) f.value=data[f.dataset.save]; });
+      if(data._name) nameEl.value=data._name; if(data._date) dateEl.value=data._date;
+      checkOrder();
+    }catch(e){}
+  }
+  function save(){
+    var data={_name:nameEl.value,_date:dateEl.value};
+    fields.forEach(function(f){ data[f.dataset.save]=f.value; });
+    try{ localStorage.setItem(KEY, JSON.stringify(data)); document.getElementById("saveNote").textContent="Saved on this device."; }
+    catch(e){ document.getElementById("saveNote").textContent="Download your answers before closing this page."; }
+  }
+  fields.concat([nameEl,dateEl]).forEach(function(f){ f.addEventListener("input", save); f.addEventListener("change", save); });
+  load();
+
+  /* ---------- Download ---------- */
+  var labels = {
+    s1a:"Scenario 1a – Total interest ($)", s1b:"Scenario 1b – Total cost after 30 months ($)", s1work:"Scenario 1 – Work",
+    s2a:"Scenario 2a – Months to pay off", s2b:"Scenario 2b – Total interest ($)", s2work:"Scenario 2 – Work",
+    s3a:"Scenario 3a – Interest at $300/month ($)", s3b1:"Scenario 3b – Interest at $400/month ($)", s3b2:"Scenario 3b – Interest saved ($)", s3work:"Scenario 3 – Work",
+    s4a1:"Scenario 4a – Months to pay off", s4a2:"Scenario 4a – Total cost of TV ($)", s4b1:"Scenario 4b – Months to save $2,000", s4b2:"Scenario 4b – Interest earned ($)", s4work:"Scenario 4 – Work",
+    reflect:"Reflection – Why pay off debt faster?",
+    p1:"First priority", p2:"Second priority", p3:"Third priority",
+    why1:"Why first?", why2:"Why second?", why3:"Why third?", split:"Splitting $500 extra each month"
+  };
+  function download(){
+    var t="CREDIT CARD INTEREST WORKSHEET – Approach ISC\nName: "+(nameEl.value||"")+"\nDate: "+(dateEl.value||"")+"\n\n";
+    fields.forEach(function(f){ var k=f.dataset.save; t+=(labels[k]||k)+":\n"+(f.value||"(blank)")+"\n\n"; });
+    var blob=new Blob([t],{type:"text/plain"}), a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download="credit-card-worksheet-"+((nameEl.value||"student").trim().replace(/\s+/g,"-").toLowerCase())+".txt";
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+  ["downloadBtn","downloadBtn2"].forEach(function(id){ document.getElementById(id).addEventListener("click", download); });
+  ["printBtn","printBtn2"].forEach(function(id){ document.getElementById(id).addEventListener("click", function(){
+    document.querySelectorAll("details.work").forEach(function(d){ d.open=true; }); window.print(); }); });
+  document.getElementById("clearBtn").addEventListener("click", function(){
+    if(!confirm("Clear all your answers on this page?")) return;
+    fields.forEach(function(f){ f.value=""; }); nameEl.value=""; dateEl.value="";
+    try{ localStorage.removeItem(KEY); }catch(e){}
+    checkOrder();
+  });
+})();
+</script>
+</body>
+</html>
